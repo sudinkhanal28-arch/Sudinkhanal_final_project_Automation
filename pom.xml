@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Project Identity -->
+    <groupId>com.sudin.khanal</groupId>
+    <artifactId>sudin-selenium-automation-framework</artifactId>
+    <version>1.0.0</version>
+
+    <name>Sudin Khanal Selenium Automation Framework</name>
+    <description>
+        Selenium + TestNG automation framework using Page Object Model,
+        explicit waits, config-driven execution, and parallel support.
+    </description>
+
+    <developers>
+        <developer>
+            <name>Sudin Khanal</name>
+        </developer>
+    </developers>
+
+    <!-- ====================== -->
+    <!-- Properties (Defaults)  -->
+    <!-- ====================== -->
+    <properties>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Dependency Versions -->
+        <selenium.version>4.40.0</selenium.version>
+        <testng.version>7.12.0</testng.version>
+        <slf4j.version>2.0.17</slf4j.version>
+        <surefire.version>3.2.5</surefire.version>
+
+        <!-- Default Runtime Values (prevents blank system properties) -->
+        <headless>false</headless>
+        <baseUrl>https://www.saucedemo.com/</baseUrl>
+        <timeoutSeconds>8</timeoutSeconds>
+    </properties>
+
+    <!-- ====================== -->
+    <!-- Dependencies           -->
+    <!-- ====================== -->
+    <dependencies>
+
+        <!-- Selenium -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+
+        <!-- TestNG (ONLY once, test scope) -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- SLF4J Simple Logger (removes no-provider warnings) -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <!-- ====================== -->
+    <!-- Build Configuration    -->
+    <!-- ====================== -->
+    <build>
+        <plugins>
+
+            <!-- Surefire Plugin (Test Execution) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.version}</version>
+
+                <configuration>
+
+                    <!-- Stable parallel execution -->
+                    <parallel>classes</parallel>
+                    <threadCount>2</threadCount>
+                    <useUnlimitedThreads>false</useUnlimitedThreads>
+
+                    <!-- Use testng.xml suite -->
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+
+                    <!-- Pass runtime properties safely -->
+                    <systemPropertyVariables>
+                        <headless>${headless}</headless>
+                        <baseUrl>${baseUrl}</baseUrl>
+                        <timeoutSeconds>${timeoutSeconds}</timeoutSeconds>
+                    </systemPropertyVariables>
+
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
